@@ -11,8 +11,17 @@ public class AppTest {
     static AndroidDriver driver;
 
     public static void main(String[] args) throws MalformedURLException {
-        AndroidApp1("Galaxy.*", "11", "Android");
-        testing();
+        try {
+            AndroidApp1("Galaxy.*", "11", "Android");
+            testing();
+        } catch (MalformedURLException e) {
+            System.err.println("Malformed URL exception: " + e.getMessage());
+        } finally {
+            // Ensure the driver is quit after test execution
+            if (driver != null) {
+                driver.quit();
+            }
+        }
     }
 
     public static void AndroidApp1(String device, String version, String platform) throws MalformedURLException {
@@ -23,7 +32,7 @@ public class AppTest {
         capabilities.setCapability("platformVersion", version);
         capabilities.setCapability("platformName", platform);
         capabilities.setCapability("isRealMobile", true);
-        capabilities.setCapability("app", "lt://APP10160571441724918016368480");
+        capabilities.setCapability("app", "lt://APP1016041711724929108699866");
         capabilities.setCapability("deviceOrientation", "PORTRAIT");
         capabilities.setCapability("network", false);
         capabilities.setCapability("visual", true);
@@ -42,8 +51,9 @@ public class AppTest {
         // Your testing logic here
         WebDriverWait wait = new WebDriverWait(driver, 10);
         for (int i = 0; i < 10; i++) { // Loop to perform the click action 10 times
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Add"))).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@content-desc=\"Add\"]"))).click();
             System.out.println("Click " + (i + 1) + " performed.");
         }
     }
+
 }
